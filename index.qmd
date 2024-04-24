@@ -41,11 +41,10 @@ library("reactable")
 
 # Load Data
 
-We read in the data using `readr::read_csv`
+We read in the data using `readxl::read_excel`
 
 ```{webr-r}
 #| label: Load Data
-
 download.file(
   url = "https://raw.githubusercontent.com/JauntyJJS/fertility_webr/main/data/Fertility%20Rate%20By%20Ethnic%20Group%2C%20Yearly.xlsx",
   destfile = "Fertility Rate By Ethnic Group, Yearly.xlsx",
@@ -60,8 +59,15 @@ fertility_rate_data <- readxl::read_excel(
 
 ```{webr-r}
 #| label: View Data
-
 fertility_rate_data
+
+```
+
+
+```{webr-r}
+#| label: view fertility rate data interactively
+fertility_rate_data |> 
+  reactable::reactable()
 
 ```
 
@@ -69,7 +75,6 @@ fertility_rate_data
 
 ```{webr-r}
 #| label: prepare data
-
 fertility_rate_data_year <- fertility_rate_data |> 
   tidyr::pivot_longer(
     cols = -c("Ethnicity"),
@@ -95,12 +100,9 @@ fertility_rate_data_year <- fertility_rate_data |>
 fertility_rate_data
 ```
 
-# View Data Interactive
-
 ```{webr-r}
-#| label: view data
-
-fertility_rate_data |> 
+#| label: view fertility rate data year interactively
+fertility_rate_data_year |> 
   reactable::reactable()
 
 ```
@@ -109,7 +111,6 @@ fertility_rate_data |>
 
 ```{webr-r}
 #| label: plot fertility
-
 # For the hover text
 text_input <- glue::glue(
    "{fertility_rate_data_year[['Ethnicity']]}: {format(fertility_rate_data_year[['Total_Fertility_Rate_Per_Female']], big.mark = ",", digits = 2)}"
