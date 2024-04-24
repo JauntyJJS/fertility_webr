@@ -1,0 +1,6 @@
+APPDATA="D:/Jeremy/PortableR/RAppData/Roaming"
+LOCALAPPDATA="D:/Jeremy/PortableR/RAppData/Local"
+TEMP="D:/Jeremy/PortableR/RPortableWorkDirectory/temp"
+TMP="D:/Jeremy/PortableR/RPortableWorkDirectory/temp"
+_R_CHECK_SYSTEM_CLOCK_=0
+RENV_DOWNLOAD_FILE_METHOD = "libcurl"

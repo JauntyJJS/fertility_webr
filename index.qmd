@@ -1,0 +1,33 @@
+---
+title: "webr_quarto_test"
+format:
+  html:
+    toc: true
+    toc-depth: 5
+    toc-location: right
+    toc-expand: true
+    number-sections: true
+    number-depth: 5
+    smooth-scroll: true
+    code-fold: true
+    freeze: false
+    theme:
+      light:
+        - flatly
+        #- custom.scss
+      dark:
+        - solar
+engine: knitr
+filters:
+  - webr
+webr:
+  packages: ['ggplot2', 'dplyr']
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+```{r}
+1 + 1
+```
