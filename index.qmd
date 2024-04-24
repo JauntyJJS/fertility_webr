@@ -3,14 +3,11 @@ title: "webr_quarto_test"
 format:
   html:
     toc: true
-    toc-depth: 5
-    toc-location: right
+    toc-location: left
     toc-expand: true
-    number-sections: true
-    number-depth: 5
     smooth-scroll: true
-    code-fold: true
     freeze: false
+    highlight-style: github-dark
     theme:
       light:
         - flatly
@@ -21,13 +18,64 @@ engine: knitr
 filters:
   - webr
 webr:
-  packages: ['ggplot2', 'dplyr']
+  packages: ['readr', 'dplyr', 'tidyr', 'reactable']
 ---
 
-## Quarto
+# Load R Packages Interactively
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+```{webr-r}
+library("readr")
+library("dplyr")
+library("tidyr")
+library("reactable")
+```
 
-```{r}
-1 + 1
+# Load Data
+
+We read in the data using `readr::read_csv`
+
+```{webr-r}
+#| label: Load Data
+
+fertility_rate_data <- readr::read_csv(
+  file = "https://raw.githubusercontent.com/JauntyJJS/fertility_webr/main/data/Fertility%20Rate%20By%20Ethnic%20Group%2C%20Yearly.csv",
+  col_names = TRUE,
+  show_col_types = FALSE
+)
+
+fertility_rate_data |> 
+  reactable::reactable(
+    defaultPageSize = 5,
+    paginationType = "jump"
+  )
+```
+
+# Prepare Data For Plot
+
+```{webr-r}
+#| label: prepare data
+
+fertility_rate_data_year <- fertility_rate_data |> 
+  tidyr::pivot_longer(
+    cols = -c("Ethnicity"),
+    names_to = c("Year"),
+    values_to = "Total_Fertility_Rate_Per_Female"
+  ) |> 
+  dplyr::mutate(
+    Ethnicity = dplyr::case_when(
+      .data[["Ethnicity"]] == "Chinese (Per Female)" ~ "Chinese",
+      .data[["Ethnicity"]] == "Malays (Per Female)" ~ "Malays",
+      .data[["Ethnicity"]] == "Indians (Per Female)" ~ "Indians",
+      .data[["Ethnicity"]] == "All (Per Female)" ~ "Total*",
+    ),
+    Ethnicity = forcats::fct_relevel(
+      .data[["Ethnicity"]],
+      c("Chinese", "Malays", "Indians", "Total*")
+    )
+  ) |> 
+  dplyr::filter(
+    .data[["Year"]] >= 1980
+  )
+
+fertility_rate_data
 ```
