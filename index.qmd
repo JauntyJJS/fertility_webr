@@ -20,7 +20,7 @@ engine: knitr
 filters:
   - webr
 webr:
-  packages: ['readr', 'dplyr', 'tidyr', 'reactable']
+  packages: ['readr', 'dplyr', 'tidyr', 'forcats', 'reactable']
 ---
 
 # Load R Packages Interactively
@@ -33,6 +33,7 @@ webr:
 library("readr")
 library("dplyr")
 library("tidyr")
+library("forcats")
 library("reactable")
 ```
 
@@ -44,8 +45,13 @@ We read in the data using `readr::read_csv`
 #| label: Load Data
 #| context: setup
 
+download.file(
+  url = "https://raw.githubusercontent.com/JauntyJJS/fertility_webr/main/data/Fertility%20Rate%20By%20Ethnic%20Group%2C%20Yearly.csv",
+  destfile = "Fertility Rate By Ethnic Group, Yearly.csv",
+  quiet = TRUE)
+
 fertility_rate_data <- readr::read_csv(
-  file = "https://raw.githubusercontent.com/JauntyJJS/fertility_webr/main/data/Fertility%20Rate%20By%20Ethnic%20Group%2C%20Yearly.csv",
+  file = "Fertility Rate By Ethnic Group, Yearly.csv",
   col_names = TRUE,
   show_col_types = FALSE
 )
@@ -56,7 +62,7 @@ fertility_rate_data <- readr::read_csv(
 ```{webr-r}
 #| label: View Data
 
-fertility_rate_data |> 
+fertility_rate_data
   reactable::reactable(
     defaultPageSize = 5,
     paginationType = "jump"
