@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -29,8 +63,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="index_files/libs/quarto-html/anchor.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -241,7 +273,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"out-height":"","fig-width":7,"editor-font-scale":1,"context":"interactive","editor-quick-suggestions":"false","comment":"","classes":"","results":"markup","fig-height":5,"autorun":"false","fig-cap":"","dpi":72,"warning":"true","editor-max-height":"","read-only":"false","output":"true","out-width":"700px","message":"true","label":"unnamed-chunk-1"},"code":"library(\"readr\")\nlibrary(\"dplyr\")\nlibrary(\"tidyr\")\nlibrary(\"reactable\")","id":1},{"options":{"out-height":"","fig-width":7,"editor-font-scale":1,"context":"interactive","editor-quick-suggestions":"false","comment":"","classes":"","results":"markup","fig-height":5,"autorun":"false","fig-cap":"","dpi":72,"warning":"true","editor-max-height":"","read-only":"false","output":"true","out-width":"700px","message":"true","label":"Load Data"},"code":"\nfertility_rate_data <- readr::read_csv(\n  file = \"https://raw.githubusercontent.com/JauntyJJS/fertility_webr/main/data/Fertility%20Rate%20By%20Ethnic%20Group%2C%20Yearly.csv\",\n  col_names = TRUE,\n  show_col_types = FALSE\n)\n\nfertility_rate_data |> \n  reactable::reactable(\n    defaultPageSize = 5,\n    paginationType = \"jump\"\n  )","id":2},{"options":{"out-height":"","fig-width":7,"editor-font-scale":1,"context":"interactive","editor-quick-suggestions":"false","comment":"","classes":"","results":"markup","fig-height":5,"autorun":"false","fig-cap":"","dpi":72,"warning":"true","editor-max-height":"","read-only":"false","output":"true","out-width":"700px","message":"true","label":"prepare data"},"code":"\nfertility_rate_data_year <- fertility_rate_data |> \n  tidyr::pivot_longer(\n    cols = -c(\"Ethnicity\"),\n    names_to = c(\"Year\"),\n    values_to = \"Total_Fertility_Rate_Per_Female\"\n  ) |> \n  dplyr::mutate(\n    Ethnicity = dplyr::case_when(\n      .data[[\"Ethnicity\"]] == \"Chinese (Per Female)\" ~ \"Chinese\",\n      .data[[\"Ethnicity\"]] == \"Malays (Per Female)\" ~ \"Malays\",\n      .data[[\"Ethnicity\"]] == \"Indians (Per Female)\" ~ \"Indians\",\n      .data[[\"Ethnicity\"]] == \"All (Per Female)\" ~ \"Total*\",\n    ),\n    Ethnicity = forcats::fct_relevel(\n      .data[[\"Ethnicity\"]],\n      c(\"Chinese\", \"Malays\", \"Indians\", \"Total*\")\n    )\n  ) |> \n  dplyr::filter(\n    .data[[\"Year\"]] >= 1980\n  )\n\nfertility_rate_data","id":3}];
+globalThis.qwebrCellDetails = [{"id":1,"options":{"output":"true","out-height":"","editor-max-height":"","read-only":"false","fig-height":5,"message":"true","dpi":72,"label":"Load Data","out-width":"700px","comment":"","editor-quick-suggestions":"false","warning":"true","classes":"","context":"setup","fig-width":7,"results":"markup","fig-cap":"","editor-font-scale":1,"autorun":"true"},"code":"\nfertility_rate_data <- readr::read_csv(\n  file = \"https://raw.githubusercontent.com/JauntyJJS/fertility_webr/main/data/Fertility%20Rate%20By%20Ethnic%20Group%2C%20Yearly.csv\",\n  col_names = TRUE,\n  show_col_types = FALSE\n)"},{"id":2,"options":{"output":"true","out-height":"","editor-max-height":"","read-only":"false","fig-height":5,"message":"true","dpi":72,"label":"View Data","out-width":"700px","comment":"","editor-quick-suggestions":"false","warning":"true","classes":"","context":"interactive","fig-width":7,"results":"markup","fig-cap":"","editor-font-scale":1,"autorun":"false"},"code":"\nfertility_rate_data |> \n  reactable::reactable(\n    defaultPageSize = 5,\n    paginationType = \"jump\"\n  )"},{"id":3,"options":{"output":"true","out-height":"","editor-max-height":"","read-only":"false","fig-height":5,"message":"true","dpi":72,"label":"prepare data","out-width":"700px","comment":"","editor-quick-suggestions":"false","warning":"true","classes":"","context":"interactive","fig-width":7,"results":"markup","fig-cap":"","editor-font-scale":1,"autorun":"false"},"code":"\nfertility_rate_data_year <- fertility_rate_data |> \n  tidyr::pivot_longer(\n    cols = -c(\"Ethnicity\"),\n    names_to = c(\"Year\"),\n    values_to = \"Total_Fertility_Rate_Per_Female\"\n  ) |> \n  dplyr::mutate(\n    Ethnicity = dplyr::case_when(\n      .data[[\"Ethnicity\"]] == \"Chinese (Per Female)\" ~ \"Chinese\",\n      .data[[\"Ethnicity\"]] == \"Malays (Per Female)\" ~ \"Malays\",\n      .data[[\"Ethnicity\"]] == \"Indians (Per Female)\" ~ \"Indians\",\n      .data[[\"Ethnicity\"]] == \"All (Per Female)\" ~ \"Total*\",\n    ),\n    Ethnicity = forcats::fct_relevel(\n      .data[[\"Ethnicity\"]],\n      c(\"Chinese\", \"Malays\", \"Indians\", \"Total*\")\n    )\n  ) |> \n  dplyr::filter(\n    .data[[\"Year\"]] >= 1980\n  )\n\nfertility_rate_data"}];
 
 </script>
 <script type="module">
@@ -1347,12 +1379,18 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 
 <section id="load-r-packages-interactively" class="level1">
 <h1>Load R Packages Interactively</h1>
-<div id="qwebr-insertion-location-1"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"readr"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyr"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"reactable"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="load-data" class="level1">
 <h1>Load Data</h1>
 <p>We read in the data using <code>readr::read_csv</code></p>
+<div id="qwebr-insertion-location-1"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>

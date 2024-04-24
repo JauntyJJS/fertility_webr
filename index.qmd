@@ -7,7 +7,9 @@ format:
     toc-expand: true
     smooth-scroll: true
     freeze: false
-    highlight-style: github-dark
+    highlight-style:
+      light: github
+      dark: github-dark
     theme:
       light:
         - flatly
@@ -23,7 +25,11 @@ webr:
 
 # Load R Packages Interactively
 
-```{webr-r}
+```{r}
+#| label: Load R Packages
+#| message: false
+#| warning: false
+
 library("readr")
 library("dplyr")
 library("tidyr")
@@ -36,12 +42,19 @@ We read in the data using `readr::read_csv`
 
 ```{webr-r}
 #| label: Load Data
+#| context: setup
 
 fertility_rate_data <- readr::read_csv(
   file = "https://raw.githubusercontent.com/JauntyJJS/fertility_webr/main/data/Fertility%20Rate%20By%20Ethnic%20Group%2C%20Yearly.csv",
   col_names = TRUE,
   show_col_types = FALSE
 )
+
+```
+
+
+```{webr-r}
+#| label: View Data
 
 fertility_rate_data |> 
   reactable::reactable(
